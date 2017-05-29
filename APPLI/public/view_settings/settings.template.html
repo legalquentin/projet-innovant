@@ -1,0 +1,60 @@
+<table class="ui celled padded table" style="width:950px;">
+  <thead>
+    <tr>
+      <th class="single line">Real Time</th>
+      <th>Last Alert</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <button class="ui secondary button" ng-click="">Watch now</button>
+      </td>
+      <td class="single line">
+        10 minutes ago...
+      </td>
+      <td> however, with some nonresponders.</td>
+    </tr>
+    <tr>
+      <td>
+        <button class="ui secondary button" ng-click="">Watch now</button>
+      </td>
+      <td class="single line">
+        10 days ago...
+      </td>
+      <td> nothing to say here.</td>
+    </tr>
+  </tbody>
+</table>
+<!-- Modal to display when (if) user do not have any camera -->
+<!-- <div class="ui basic modal" id="watchCam">
+  <div class="content">
+    <iframe width="650" height="450" src="https://www.youtube.com/embed/D365SZuES18"></iframe>
+  </div>
+</div> -->
+
+<div class="ui basic modal" id="noCam">
+    <style>
+      .ui.modal {
+        text-align:center;
+      }
+    </style>
+  <div class="ui icon header">
+    <i class="hide icon"></i>
+    Camera Not Found
+  </div>
+  <div class="content" style="text-align:center;">
+    <p>You don't seems to have any Camera, would you like to add one ?</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      No
+    </div>
+    <div class="ui green ok inverted button">
+      <i class="checkmark icon"></i>
+      Yes
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>App Voyageur</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="semantic-ui/dist/semantic.min.css">
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script src="semantic-ui/dist/semantic.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+  <script src="http://maps.google.com/maps/api/js"></script>
+  <script src="app.js"></script>
+  <script src="factories.js"></script>
+  <script src="view_navbar/navbar.module.js"></script>
+  <script src="view_navbar/navbar.component.js"></script>
+</head>
+<body>
+  <!-- <navbar></navbar> -->
+  <div class="pusher">
+    <!-- Site content !-->
+    <div ng-view></div>
+  </div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="view_home/home.module.js"></script>
+  <script src="view_home/home.component.js"></script>
+  <script src="view_chat/chat.module.js"></script>
+  <script src="view_chat/chat.component.js"></script>
+  <script src="view_connect/connect.module.js"></script>
+  <script src="view_connect/connect.component.js"></script>
+  <script src="view_map/map.module.js"></script>
+  <script src="view_map/map.component.js"></script>
+  <script src="view_settings/settings.module.js"></script>
+  <script src="view_settings/settings.component.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+</body>
+<footer>
+  <!-- <span>Credit photos : <a href="https://www.instagram.com/elle_aroundtheworld/">Elle around the world<a></span> -->
+</footer>
+</html>
