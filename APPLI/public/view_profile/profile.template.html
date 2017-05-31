@@ -1,0 +1,52 @@
+
+Attantion pas d'appel dans lesformulaire : action="/connection"
+
+---------------------------------------------------
+<body>
+  <h2>Information</h2>
+  <div>
+    <h3>Information de base</h3>
+    <form method="post">
+      <input type="text" name="surname" placeholder="Nom"><br>
+      <input type="text" name="name" placeholder="Prenom"><br>
+      <input type="email" name="email" placeholder="Addresse mail"><br>
+      <input type="text" name="phone" placeholder="06 ** ** ** **"><br>
+      <input type="date" name="DateOfBirth">
+      <br>Information complémentaire<br>
+      <input type="text" name="pays" placeholder="pays"><br>
+      <input type="text" name="img" placeholder="Lien de l'image d'havatare"><br>
+      Newlester <input type="checkbox" name="pub" value="pub"> <br>
+      <input type="submit" value="Enregister"/>
+    </form>
+  </div>
+
+  <div>
+    <h3>Information de securiter</h3>
+    <form method="post">
+      <input type="password" name="password" placeholder="Password"><br>
+      <input type="password" name="pass" placeholder="Password"><br>
+      <input type="submit" value="Enregister"/>
+    </form>
+  </div>
+
+  <div>
+    <h3>Information Logement</h3>
+    <form method="post">
+      <input type="radio" name="home" value="no" checked> Non
+      <input type="radio" name="home" value="maison"> Maison
+      <input type="radio" name="home" value="appartement"> Apartement
+      <input type="radio" name="home" value="autre"> Autre
+      <br>
+      Nombre de lit total disponible
+      <input type="number" name="bead" min="1" max="99"><br>
+      Enplassement
+      <input type="text" name="country" placeholder="Pays : France"><br>
+      <input type="text" name="place" placeholder="Ville : Paris"><br>
+      <input type="text" name="rode" placeholder="Rue : rue patafoin"><br>
+      <input type="number" name="bead" placeholder="n° : 2"><br>
+      Image
+      <input type="text" name="img" placeholder="Lien de l'image"><br>
+      <input type="submit" value="Enregister"/>
+    </form>
+  </div>
+</body>
