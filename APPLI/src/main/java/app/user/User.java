@@ -94,10 +94,3 @@ public class User {
         return xp;
     }
 }
-/*
-*
-  pictureProfile: "path/to/ftp/picture"
-  location: "fr_FR",
-*
-*
-* */
