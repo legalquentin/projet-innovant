@@ -5,8 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.soap.SAAJResult;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
-@Entity // This tells Hibernate to make a table out of this class
+
+@Entity
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -22,6 +27,10 @@ public class User {
     private String picture;
     private String location;
     private boolean newsletter;
+
+/*    @OneToOne
+    @JoinColumn(name = "travelerProfile")
+    TravelerProfile travelerProfile;*/
 
     public User() {}
 
