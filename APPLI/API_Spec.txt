@@ -6,4 +6,4 @@ $ gradle build
 To start it
 $ java -jar build/libs/gs-rest-service-0.1.0.jar
 
-you can access it on http://localhost:8080/greeting
+you can access it on http://localhost:8080/
