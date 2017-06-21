@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import javax.xml.soap.SAAJResult;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -12,8 +17,8 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
 
     private Integer id;
-    private Integer dateBirth;
-    private Integer dateJoin;
+    private String dateBirth;
+    private String dateJoin;
     private Integer xp;
     private String name;
     private String surname;
@@ -36,7 +41,7 @@ public class User {
     }
     public void setId(Integer id) {
 		   this.id = id;
-	}
+	   }
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -46,10 +51,10 @@ public class User {
     public void setLocation(String location) {
         this.location = location;
     }
-    public void setDateBirth(Integer dateBirth) {
+    public void setDateBirth(String dateBirth) {
         this.dateBirth = dateBirth;
     }
-    public void setDateJoin(Integer dateJoin) {
+    public void setDateJoin(String dateJoin) {
         this.dateJoin = dateJoin;
     }
     public void setNewsletter(boolean newsletter) {
@@ -58,8 +63,6 @@ public class User {
     public void setXp(Integer xp) {
         this.xp = xp;
     }
-
-
     public Integer getId() {
 	     return id;
 	  }
@@ -81,10 +84,10 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public Integer getDateBirth() {
+    public String getDateBirth() {
         return dateBirth;
     }
-    public Integer getDateJoin() {
+    public String getDateJoin() {
         return dateJoin;
     }
     public boolean getNewsletter() {
@@ -92,5 +95,37 @@ public class User {
     }
     public Integer getXp() {
         return xp;
+    }
+
+    public String getUserJsonString() {
+      JSONObject jsonObject = new JSONObject();
+
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("id", String.valueOf(id));
+      map.put("dateBirth", String.valueOf(dateBirth));
+      map.put("dateJoin", String.valueOf(dateJoin));
+      map.put("xp", String.valueOf(xp));
+      map.put("name", String.valueOf(name));
+      map.put("surname", String.valueOf(surname));
+      map.put("email", String.valueOf(email));
+      map.put("password", String.valueOf(password));
+      map.put("picture", String.valueOf(picture));
+      map.put("location", String.valueOf(location));
+      map.put("newsletter", (newsletter? "true" : "false"));
+      jsonObject.put("User",map);
+      return jsonObject.toJSONString();
+    }
+
+    public void update(JSONObject data) {
+      this.dateBirth = (String) data.get("dateBirth");
+      this.dateJoin = (String) data.get("dateJoin");
+      Long tmplong = (Long) data.get("xp");
+      this.xp = tmplong.intValue();
+      this.name = (String) data.get("name");
+      this.surname = (String) data.get("surname");
+      this.password = (String) data.get("password");
+      this.picture = (String) data.get("picture");
+      this.location = (String) data.get("location");
+      this.newsletter = Boolean.valueOf((String)data.get("newsletter"));
     }
 }
