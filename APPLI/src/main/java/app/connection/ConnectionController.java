@@ -42,8 +42,8 @@ public class ConnectionController {
   public String register(@ModelAttribute("User") User user,
   BindingResult result, Model model) {
     for (User item : getAllUsers()) {
-      if (item.getName().equals(user.getName()))
-        return "403";
+      // if (item.getFirstname().equals(user.getFirstname()))
+      //   return "403";
       if (item.getEmail().equals(user.getEmail()))
         return "403";
     }

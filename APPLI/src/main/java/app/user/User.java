@@ -25,8 +25,8 @@ public class User {
     private String dateBirth;
     private String dateJoin;
     private Integer xp;
-    private String name;
-    private String surname;
+    private String firstname;
+    private String lastname;
     private String email;
     private String password;
     private String picture;
@@ -39,8 +39,8 @@ public class User {
 
     public User() {}
 
-    public void setName(String name) {
-      this.name = name;
+    public void setFirstname(String firstname) {
+      this.firstname = firstname;
     }
     public void setEmail(String email) {
       this.email = email;
@@ -51,8 +51,8 @@ public class User {
     public void setId(Integer id) {
 		   this.id = id;
 	   }
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     public void setPicture(String picture) {
         this.picture = picture;
@@ -75,11 +75,11 @@ public class User {
     public Integer getId() {
 	     return id;
 	  }
-    public String getSurname() {
-        return surname;
+    public String getFirstname() {
+        return firstname;
     }
-    public String getName() {
-        return name;
+    public String getLastname() {
+        return lastname;
     }
     public String getPicture() {
         return picture;
@@ -114,8 +114,8 @@ public class User {
       map.put("dateBirth", String.valueOf(dateBirth));
       map.put("dateJoin", String.valueOf(dateJoin));
       map.put("xp", String.valueOf(xp));
-      map.put("name", String.valueOf(name));
-      map.put("surname", String.valueOf(surname));
+      map.put("firstname", String.valueOf(firstname));
+      map.put("lastname", String.valueOf(lastname));
       map.put("email", String.valueOf(email));
       map.put("password", String.valueOf(password));
       map.put("picture", String.valueOf(picture));
@@ -130,8 +130,8 @@ public class User {
       this.dateJoin = (String) data.get("dateJoin");
       Long tmplong = (Long) data.get("xp");
       this.xp = tmplong.intValue();
-      this.name = (String) data.get("name");
-      this.surname = (String) data.get("surname");
+      this.firstname = (String) data.get("firstname");
+      this.lastname = (String) data.get("lastname");
       this.password = (String) data.get("password");
       this.picture = (String) data.get("picture");
       this.location = (String) data.get("location");
