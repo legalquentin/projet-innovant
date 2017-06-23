@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RestController
 public class TravelerProfileController {
 
+    @Autowired
+    private TravelerProfileRepositoy travelerProfileRepositoy;
 
-    @RequestMapping(value = "/travellerProfile", method = RequestMethod.GET, produces = "application/json")
-    public String connect(@ModelAttribute("User") User user,
+
+    @RequestMapping(value = "/travellerProfile", method = RequestMethod.POST, produces = "application/json")
+    public String connect(@ModelAttribute("TravelerPtofile") TravelerProfile travelerProfile,
                           BindingResult result, Model model)
     {
-        return "hello";
+        travelerProfileRepositoy.save(travelerProfile);
+        return "200";
     }
 
     /*public @ResponseBody Iterable<User> getAllUsers() {
