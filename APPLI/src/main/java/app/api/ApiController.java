@@ -1,6 +1,4 @@
-package app.api;
-
-<<<<<<< HEAD
+package app;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
@@ -9,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-=======
->>>>>>> 68a3baf0f893863c5a6bdfcf80d24f7a9c79f624
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

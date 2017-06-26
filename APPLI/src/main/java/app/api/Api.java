@@ -1,4 +1,4 @@
-package app.api;
+package app;
 
 public class Api {
 

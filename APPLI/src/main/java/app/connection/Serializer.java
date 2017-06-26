@@ -1,15 +1,12 @@
-package app.connection;
+package app;
 
-import app.user.User;
+// import app.user.User;
 import org.json.simple.JSONObject;
 
 import java.security.MessageDigest;
-<<<<<<< HEAD
 import java.security.Security;
 import java.security.SecureRandom;
 import java.math.BigInteger;
-=======
->>>>>>> 68a3baf0f893863c5a6bdfcf80d24f7a9c79f624
 
 // this class is used to serialize incoming data from http requests
 // and create a ResponseBody for the client

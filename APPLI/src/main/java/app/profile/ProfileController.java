@@ -37,10 +37,10 @@ public class ProfileController {
   @RequestMapping(value = PATH, method = RequestMethod.POST, produces = "application/json")
   public String manageProfile(@RequestBody JSONObject json, @RequestHeader(value="session-id") String sessionId) {
     try {
-      if (!serializer.checkToken((String)data.get("email"), sessionId)) {
+      JSONObject data = (JSONObject) new JSONParser().parse(JSONObject.toJSONString((HashMap) json.get("data")));
+      if (!serializer.checkToken((String) data.get("email"), sessionId)) {
         return serializer.CreateResponseBody(403, "Unauthenticated request");
       }
-      JSONObject data = (JSONObject) new JSONParser().parse(JSONObject.toJSONString((HashMap) json.get("data")));
       Integer action = (Integer) json.get("action");
       if (action == 1) {
         return serializer.CreateResponseBody(200, updateProfile(data));

@@ -1,4 +1,4 @@
-package app.user;
+package app;
 
 import org.json.simple.JSONObject;
 import javax.persistence.Entity;
