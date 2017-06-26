@@ -1,11 +1,11 @@
-package app;
+package app.connection;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.ui.Model;
-import java.util.Arrays;
-import org.json.simple.JSONArray;
+import app.profile.ProfileController;
+import app.user.*;
+import app.user.UserRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+<<<<<<< HEAD
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+=======
+>>>>>>> 68a3baf0f893863c5a6bdfcf80d24f7a9c79f624
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class ConnectionController {
