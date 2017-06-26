@@ -41,7 +41,9 @@ public class ProfileController {
 
       JSONObject data = (JSONObject) json.get("data");
       Long action = (Long) json.get("action");
-
+      if (!serializer.checkToken((String)data.get("email"), sessionId)) {
+        return serializer.CreateResponseBody(403, "Unauthenticated request");
+      }
       if (action.intValue() == 1) {
         return serializer.CreateResponseBody(200, updateProfile(data));
       }
@@ -69,7 +71,7 @@ public class ProfileController {
   public String getProfile(String email, String sessionId) {
     try {
       String user = userRepository.findByEmail(email).getUserJsonString();
-      return "{\"status\":200, \"response\": {\"user\":"+user+", \"session-id\":\""+sessionId+"\"}}";
+      return "{\"status\":200, \"response\":"+user+", \"session-id\":\""+sessionId+"\"}";
     } catch (NullPointerException ex) {
       return "{\"status\":200, \"response\":\"{}\"}";
     }

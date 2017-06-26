@@ -7,10 +7,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,28 +46,56 @@ public class ConnectionController {
   }
 
   //REGISTER
-  @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-  public String register(@ModelAttribute("User") User user,
-  BindingResult result, Model model) {
-    for (User item : getAllUsers()) {
-      if (item.getEmail().equals(user.getEmail()))
-        return "403"; // make token
+  @CrossOrigin(origins = "*")
+  @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+  public String register(@RequestBody JSONObject json) {
+    try {
+      String email = (String) json.get("email");
+      for (User item : getAllUsers()) {
+        if (item.getEmail().equals(email))
+          return serializer.CreateResponseBody(403, "email is already registered"); // make token
+      }
+      User user = new User();
+      user.setEmail(email);
+      user.setPassword(serializer.encodePwd((String) json.get("password")));
+      userRepository.save(user);
+      return profileController.getProfile(email, serializer.bakeToken(email));
+    } catch (Exception ex) {
+      Serializer serializer = new Serializer();
+      return serializer.CreateResponseBody(400, "Bad Request");
     }
-    user.setPassword(serializer.encodePwd(user.getPassword()));
-    userRepository.save(user);
-    return "200";
   }
 
-  @RequestMapping(value = "/connection", method = RequestMethod.POST, produces = "application/json")
-  public String manageProfile(@RequestParam(value = "payload", defaultValue = "{}") String payload) {
+  // LOGIN
+  @CrossOrigin(origins = "*")
+  @RequestMapping(value = "/connection", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+  public String manageProfile(@RequestBody JSONObject json) {
     try {
-      JSONParser parser = new JSONParser();
-      JSONObject json = (JSONObject) parser.parse(payload);
       for (User item : getAllUsers()) {
         String pwd = serializer.encodePwd((String) json.get("password"));
         String email = (String) json.get("email");
         if (email.equals(item.getEmail()) && pwd.equals(item.getPassword())) {
-          return profileController.getProfile(email, "");
+          return profileController.getProfile(email, serializer.bakeToken(email));
+        }
+      }
+      return serializer.CreateResponseBody(403, "Unknown login or password");
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      Serializer serializer = new Serializer();
+      return serializer.CreateResponseBody(400, "Bad Request");
+    }
+  }
+
+  // LOGOUT
+  @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
+  public String logout(@RequestParam(value = "payload", defaultValue = "{}") String payload, @RequestHeader(value="session-id") String sessionId) {
+    try {
+      JSONParser parser = new JSONParser();
+      JSONObject json = (JSONObject) parser.parse(payload);
+      for (User item : getAllUsers()) {
+        String email = (String) json.get("email");
+        if (email.equals(item.getEmail()) && serializer.checkToken(email, sessionId)) {
+          return "200";
         }
       }
       return "403";

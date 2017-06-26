@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TravelerProfileController {
 
     @Autowired
-    private TravelerProfileRepositoy travelerProfileRepositoy;
+    private TravelerProfileRepository travelerProfileRepository;
 
 
     @RequestMapping(value = "/travellerProfile", method = RequestMethod.POST, produces = "application/json")
     public String connect(@ModelAttribute("TravelerPtofile") TravelerProfile travelerProfile,
                           BindingResult result, Model model)
     {
-        travelerProfileRepositoy.save(travelerProfile);
+        travelerProfileRepository.save(travelerProfile);
         return "200";
     }
 

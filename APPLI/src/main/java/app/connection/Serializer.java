@@ -5,11 +5,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.security.MessageDigest;
 import java.security.Security;
+import java.security.SecureRandom;
+import java.math.BigInteger;
 
 // this class is used to serialize incoming data from http requests
 // and create a ResponseBody for the client
 
 public class Serializer {
+
+  private SecureRandom random = new SecureRandom();
+  private ApiController apiCtrl = new ApiController();
 
   String SerializeUser(User user) {
     return "chuck norris";
@@ -18,8 +23,8 @@ public class Serializer {
   String CreateResponseBody(int status, String response) {
     try {
       JSONObject obj = new JSONObject();
-      obj.put("Status", status);
-      obj.put("Response", response);
+      obj.put("status", status);
+      obj.put("response", response);
       return obj.toJSONString();
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -28,6 +33,7 @@ public class Serializer {
   }
 
   String encodePwd(String message) {
+    System.out.println(message);
     String generatedPassword = null;
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
@@ -38,11 +44,19 @@ public class Serializer {
         sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
       }
       generatedPassword = sb.toString();
-    }
-    catch (Exception e)
-    {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return generatedPassword;
+  }
+
+  public boolean checkToken(String email, String sessionId) {
+    return apiCtrl.validateUser(email, sessionId);
+  }
+
+  public String bakeToken(String email) {
+    String token = new BigInteger(130, random).toString(32);
+    apiCtrl.appendToken(email, token);
+    return token;
   }
 }
