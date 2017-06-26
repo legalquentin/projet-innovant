@@ -8,7 +8,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-//apply plugin: 'intellij'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
@@ -33,6 +32,10 @@ dependencies {
     // JPA Data (We are going to use Repositories, Entities, Hibernate, etc...)
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
+    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.0.0.RELEASE'
+
 
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'

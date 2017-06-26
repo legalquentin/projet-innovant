@@ -1,10 +1,9 @@
-package app;
+package app.connection;
 
-import org.json.simple.JSONArray;
+import app.user.User;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 import java.security.MessageDigest;
-import java.security.Security;
 
 // this class is used to serialize incoming data from http requests
 // and create a ResponseBody for the client
@@ -15,7 +14,7 @@ public class Serializer {
     return "chuck norris";
   }
 
-  String CreateResponseBody(int status, String response) {
+  public String CreateResponseBody(int status, String response) {
     try {
       JSONObject obj = new JSONObject();
       obj.put("Status", status);
