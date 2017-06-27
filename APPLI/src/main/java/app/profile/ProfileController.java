@@ -3,6 +3,7 @@ package app;
 import org.springframework.http.HttpEntity;
 import org.springframework.ui.Model;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,26 +31,32 @@ public class ProfileController {
   private UserRepository userRepository;
 
   private Serializer serializer = new Serializer();
-
-  private static final String PATH = "/profil";
+  private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
   //Profil input/output method
-  @RequestMapping(value = PATH, method = RequestMethod.POST, produces = "application/json")
-  public String manageProfile(@RequestBody JSONObject json, @RequestHeader(value="session-id") String sessionId) {
+  @RequestMapping(value = "/getProfil", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+  public String getProfil(@RequestBody JSONObject json, @RequestHeader(value="session-id") String sessionId) {
     try {
-      JSONObject data = (JSONObject) new JSONParser().parse(JSONObject.toJSONString((HashMap) json.get("data")));
-      if (!serializer.checkToken((String) data.get("email"), sessionId)) {
-        return serializer.CreateResponseBody(403, "Unauthenticated request");
-      }
-      Integer action = (Integer) json.get("action");
-      if (action == 1) {
-        return serializer.CreateResponseBody(200, updateProfile(data));
-      }
-      else {
-        return getProfile((String) data.get("email"));
-      }
+      LOGGER.info("/GetProfil requested from : "+(String) json.get("email"));
+      if (!serializer.checkToken((String) json.get("email"), sessionId))
+      return serializer.CreateResponseBody(403, "Unauthenticated request");
+      return getProfile((String) json.get("email"));
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.warning("Exception on /getProfil -- Cause: "+ ex.getMessage());
+      Serializer serializer = new Serializer();
+      return serializer.CreateResponseBody(400, "Bad Request");
+    }
+  }
+
+  @RequestMapping(value = "/updateProfil", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+  public String updateProfil(@RequestBody JSONObject json, @RequestHeader(value="session-id") String sessionId) {
+    try {
+      LOGGER.info("/UpdateProfil requested from : "+(String) json.get("email"));
+      if (!serializer.checkToken((String) json.get("email"), sessionId))
+      return serializer.CreateResponseBody(403, "Unauthenticated request");
+      return serializer.CreateResponseBody(200, updateProfile((String) json.get("user")));
+    } catch (Exception ex) {
+      LOGGER.warning("Exception on /updateProfil -- Cause: "+ ex.getMessage());
       Serializer serializer = new Serializer();
       return serializer.CreateResponseBody(400, "Bad Request");
     }
@@ -83,20 +90,20 @@ public class ProfileController {
   // his request well be accepted no matter what, so we must first figure if his session token
   // correspond to his email ! oohohoho i'm so great sometimes :D
 
-  private String updateProfile(JSONObject data) {
+  private String updateProfile(String data) {
     try {
-
-      String email = (String) data.get("email");
+      JSONParser parser = new JSONParser();
+      JSONObject obj = (JSONObject) parser.parse(data);
+      String email = (String) obj.get("email");
       // think about the token dude !
-
       User user = userRepository.findByEmail(email);
-      user.update(data);
+      user.update(obj);
       userRepository.save(user);
       return "User info Updated";
-
-      // Exception catch for when no users are found (user = null)
-    } catch (NullPointerException ex) {
-      return "No user found";
+    } catch(Exception ex) {
+      ex.printStackTrace();
+      LOGGER.warning("Exception on /updateProfil -- Cause: "+ ex.getMessage());
+      return "Error";
     }
   }
 }

@@ -3,6 +3,7 @@ package app;
 // import app.profile.ProfileController;
 // import app.user.*;
 // import app.user.UserRepository;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.validation.BindingResult;
@@ -24,9 +25,7 @@ import org.springframework.validation.BindingResult;
 @RestController
 public class ConnectionController {
 
-  private static final String FORM_VIEW = "/register";
-  private static final String WELCOME_VIEW = "/home";//"newuser.page";
-  private static final String PATH = "/connection";
+  private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
   private static Serializer serializer = new Serializer();
 
   @Autowired
@@ -34,7 +33,7 @@ public class ConnectionController {
   @Autowired
   private ProfileController profileController;
 
-  @RequestMapping(value = PATH, method = RequestMethod.GET)
+  @RequestMapping(value = "/connection", method = RequestMethod.GET)
   public String connect() {
     System.out.println("connection as 'get' is invalid !");
     return "connection form invalid";
@@ -52,6 +51,7 @@ public class ConnectionController {
   public String register(@RequestBody JSONObject json) {
     try {
       String email = (String) json.get("email");
+      LOGGER.info("/Register requested from : "+(String) json.get("email"));
       for (User item : getAllUsers()) {
         if (item.getEmail().equals(email))
           return serializer.CreateResponseBody(403, "email is already registered"); // make token
@@ -62,6 +62,7 @@ public class ConnectionController {
       userRepository.save(user);
       return profileController.getProfile(email, serializer.bakeToken(email));
     } catch (Exception ex) {
+      LOGGER.warning("Exception on /register -- Cause: "+ ex.getMessage());
       Serializer serializer = new Serializer();
       return serializer.CreateResponseBody(400, "Bad Request");
     }
@@ -72,6 +73,7 @@ public class ConnectionController {
   @RequestMapping(value = "/connection", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
   public String manageProfile(@RequestBody JSONObject json) {
     try {
+     LOGGER.info("/Connection requested from : "+(String) json.get("email"));
       for (User item : getAllUsers()) {
         String pwd = serializer.encodePwd((String) json.get("password"));
         String email = (String) json.get("email");
@@ -81,7 +83,7 @@ public class ConnectionController {
       }
       return serializer.CreateResponseBody(403, "Unknown login or password");
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.warning("Exception on /connection -- Cause: "+ ex.getMessage());
       Serializer serializer = new Serializer();
       return serializer.CreateResponseBody(400, "Bad Request");
     }
@@ -89,19 +91,16 @@ public class ConnectionController {
 
   // LOGOUT
   @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")
-  public String logout(@RequestParam(value = "payload", defaultValue = "{}") String payload, @RequestHeader(value="session-id") String sessionId) {
+  public String logout(@RequestBody JSONObject json, @RequestHeader(value="session-id") String sessionId) {
     try {
-      JSONParser parser = new JSONParser();
-      JSONObject json = (JSONObject) parser.parse(payload);
-      for (User item : getAllUsers()) {
-        String email = (String) json.get("email");
-        if (email.equals(item.getEmail()) && serializer.checkToken(email, sessionId)) {
-          return "200";
-        }
+      LOGGER.info("/Logout requested from : "+(String) json.get("email"));
+      String email = (String) json.get("email");
+      if (email.equals("tessts") && serializer.checkToken(email, sessionId)) {
+        return serializer.CreateResponseBody(200, "Successfully Disconected");
       }
-      return "403";
+      return serializer.CreateResponseBody(403, "Unauthenticated request");
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.warning("Exception on /logout -- Cause: "+ ex.getMessage());
       Serializer serializer = new Serializer();
       return serializer.CreateResponseBody(400, "Bad Request");
     }

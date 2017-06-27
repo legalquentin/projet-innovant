@@ -110,7 +110,7 @@ public class User {
       map.put("firstname", String.valueOf(firstname));
       map.put("lastname", String.valueOf(lastname));
       map.put("email", String.valueOf(email));
-      map.put("password", String.valueOf(password));
+      // map.put("password", String.valueOf(password));
       map.put("picture", String.valueOf(picture));
       map.put("location", String.valueOf(location));
       map.put("newsletter", (newsletter? "true" : "false"));
@@ -121,11 +121,11 @@ public class User {
     public void update(JSONObject data) {
       this.dateBirth = (String) data.get("dateBirth");
       this.dateJoin = (String) data.get("dateJoin");
-      Long tmplong = (Long) data.get("xp");
-      this.xp = tmplong.intValue();
+      // Long tmplong = (Long) data.get("xp");
+      // this.xp = tmplong.intValue();
       this.firstname = (String) data.get("firstname");
       this.lastname = (String) data.get("lastname");
-      this.password = (String) data.get("password");
+      // this.password = (String) data.get("password");
       this.picture = (String) data.get("picture");
       this.location = (String) data.get("location");
       this.newsletter = Boolean.valueOf((String)data.get("newsletter"));

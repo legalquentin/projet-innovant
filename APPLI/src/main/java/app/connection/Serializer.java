@@ -2,7 +2,7 @@ package app;
 
 // import app.user.User;
 import org.json.simple.JSONObject;
-
+import org.json.simple.JSONArray;
 import java.security.MessageDigest;
 import java.security.Security;
 import java.security.SecureRandom;
@@ -32,8 +32,19 @@ public class Serializer {
     }
   }
 
+  public String CreateResponseBody(int status, JSONArray response) {
+    try {
+      JSONObject obj = new JSONObject();
+      obj.put("status", status);
+      obj.put("response", response);
+      return obj.toJSONString();
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return CreateResponseBody(500, "Internal Server Error");
+    }
+  }
+
   String encodePwd(String message) {
-    System.out.println(message);
     String generatedPassword = null;
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
