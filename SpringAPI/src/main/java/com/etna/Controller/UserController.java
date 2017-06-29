@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService ;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<User> getAllUsers() {
+    public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
     }
 

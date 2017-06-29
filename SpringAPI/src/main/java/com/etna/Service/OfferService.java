@@ -1,7 +1,8 @@
 package com.etna.Service;
 
-import com.etna.Dao.OfferDao;
+//import com.etna.Dao.OfferDao;
 import com.etna.Entity.Offer;
+import com.etna.Repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +16,29 @@ import java.util.Collection;
 public class OfferService {
 
     @Autowired
-    private OfferDao offerDao;
+    private OfferRepository offerRepository;
 
-    public Collection<Offer> getAllOffers() {
-        return this.offerDao.getAllOffers();
+    public Iterable<Offer> getAllOffers() {
+        return this.offerRepository.findAll();
     }
 
     public Offer getOfferById(Integer id) {
-        return this.offerDao.getOfferById(id);
+        return this.offerRepository.findOne(id);
     }
 
     public void removeOfferById(int id) {
-        this.offerDao.removeOfferById(id);
+        this.offerRepository.delete(id);
     }
 
     public void updateOffer(Offer offer) {
-        this.offerDao.updateOffer(offer);
+        Offer ofr = this.offerRepository.findOne(offer.getId());
+        ofr.setTitle(offer.getTitle());
+        ofr.setContent(offer.getContent());
+        this.offerRepository.save(ofr);
     }
 
     public void insertOffer(Offer offer) {
-        this.offerDao.insertOffer(offer);
+        this.offerRepository.save(offer);
     }
 
 }

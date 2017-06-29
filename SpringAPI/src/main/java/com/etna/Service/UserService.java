@@ -1,7 +1,8 @@
 package com.etna.Service;
 
-import com.etna.Dao.UserDao;
+//import com.etna.Dao.UserDao;
 import com.etna.Entity.User;
+import com.etna.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,25 +16,29 @@ import java.util.Collection;
 public class UserService {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
-    public Collection<User> getAllUsers() {
-        return this.userDao.getAllUsers();
+    public Iterable<User> getAllUsers() {
+        return this.userRepository.findAll();
     }
 
     public User getUserById(Integer id) {
-        return this.userDao.getUserById( id);
+        return this.userRepository.findOne(id);
     }
 
     public void removeUserById(int id) {
-        this.userDao.removeUserById(id);
+        this.userRepository.delete(id);
     }
 
     public void updateUser(User user) {
-       this.userDao.updateUser(user);
+        User usr = this.userRepository.findOne(user.getId());
+        usr.setCountry(user.getCountry());
+        usr.setFirstname(user.getFirstname());
+        usr.setLastname(user.getLastname());
+        this.userRepository.save(usr);
     }
 
     public void insertUser(User user) {
-        this.userDao.insertUser(user);
+        this.userRepository.save(user);
     }
 }

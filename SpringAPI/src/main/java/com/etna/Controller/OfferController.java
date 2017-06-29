@@ -19,7 +19,7 @@ public class OfferController {
     private OfferService offerService ;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Offer> getAllOffers() {
+    public Iterable<Offer> getAllOffers() {
         return offerService.getAllOffers();
     }
 
