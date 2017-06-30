@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/etna/Config" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/etna/Dao" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
@@ -66,5 +67,6 @@
     <orderEntry type="library" name="Maven: org.jboss:jandex:2.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
   </component>
 </module>

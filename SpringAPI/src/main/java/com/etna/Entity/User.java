@@ -1,5 +1,8 @@
 package com.etna.Entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,20 +18,82 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
 
     private Integer id;
+    private Integer xp;
+    private boolean newsletter;
+    private String dateBirth;
+    private String dateJoin;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String firstname;
-    private String lastname;
     private String country;
-
-    public User(Integer id, String email, String firstname, String lastname, String country) {
-        this.id = id;
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.country = country;
-    }
+    private String password;
+    private String picture;
 
     public User() {}
+
+    public Integer getXp() {
+        return xp;
+    }
+
+    public void setXp(Integer xp) {
+        this.xp = xp;
+    }
+
+    public boolean isNewsletter() {
+        return newsletter;
+    }
+
+    public void setNewsletter(boolean newsletter) {
+        this.newsletter = newsletter;
+    }
+
+    public String getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(String dateBirth) {
+        this.dateBirth = dateBirth;
+    }
+
+    public String getDateJoin() {
+        return dateJoin;
+    }
+
+    public void setDateJoin(String dateJoin) {
+        this.dateJoin = dateJoin;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public Integer getId() {
         return id;
@@ -46,21 +111,6 @@ public class User {
         this.email = email;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 
     public String getCountry() {
         return country;
@@ -69,4 +119,25 @@ public class User {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public JSONObject getJsonData() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("xp", this.xp);
+            json.put("newsletter", this.newsletter);
+            json.put("dateBirth", this.dateBirth);
+            json.put("dateJoin", this.dateJoin);
+            json.put("firstName", this.firstName);
+            json.put("lastName", this.lastName);
+            json.put("email", this.email);
+            json.put("country", this.country);
+            json.put("picture", this.picture);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new JSONObject();
+        }
+    }
+
+
 }

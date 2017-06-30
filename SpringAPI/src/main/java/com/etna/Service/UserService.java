@@ -6,8 +6,6 @@ import com.etna.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-
 /**
  * Created by quentin on 29/06/2017.
  */
@@ -33,8 +31,8 @@ public class UserService {
     public void updateUser(User user) {
         User usr = this.userRepository.findOne(user.getId());
         usr.setCountry(user.getCountry());
-        usr.setFirstname(user.getFirstname());
-        usr.setLastname(user.getLastname());
+        usr.setFirstName(user.getFirstName());
+        usr.setLastName(user.getLastName());
         this.userRepository.save(usr);
     }
 

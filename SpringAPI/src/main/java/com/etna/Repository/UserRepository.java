@@ -10,7 +10,12 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    @Query(value = "SELECT * FROM User where email = :id", nativeQuery=true)
-    User findByEmail(@Param("id") String id);
+    @Query(value = "SELECT * FROM User WHERE email = :email", nativeQuery=true)
+    User findByEmail(@Param("email") String email);
+
+    @Query(value = "SELECT * FROM User WHERE email = :email AND password = :password", nativeQuery=true)
+    User authenticate(@Param("email") String email, @Param("password") String password);
+
+    boolean existsByEmail(String Email);
 
 }
