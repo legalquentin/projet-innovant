@@ -3,6 +3,7 @@ package com.etna.Controller;
 
 import com.etna.Entity.User;
 import com.etna.Service.ConnectionService;
+import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,16 +26,17 @@ public class ConnectionController {
     @Autowired
     private ConnectionService connectionService ;
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
         return connectionService.registerUser(user);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> loginUser(@RequestBody User user) {
         return connectionService.authenticateUser(user);
     }
 
+    // Absolutely have to remove that b4 prod
     @RequestMapping("/listTokens")
     public Map<String,String> ListTokens() {
         return connectionService.getSessionsTokens();

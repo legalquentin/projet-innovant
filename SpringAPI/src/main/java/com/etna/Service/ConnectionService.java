@@ -31,9 +31,11 @@ public class ConnectionService {
 
     private final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private final String PWD_PATTERN = "^([a-zA-Z0-9@*#]{6,15})$";
+
+    // tadaaa
     private static final Map<String, String> sessionsTokens = new HashMap<String, String>();
 
-    public Map<String,String> getSessionsTokens() {
+    public Map<String, String> getSessionsTokens() {
         return sessionsTokens;
     }
 
@@ -46,10 +48,10 @@ public class ConnectionService {
 //            Though i have a hunch on why it's a really bad idea to do that
 //            we'll keep it just for the sake of avoiding errors on startup
 
-           // userRepository.save(user);
-           // userRepository.delete(user);
+            // userRepository.save(user);
+            // userRepository.delete(user);
 
-            if(!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
+            if (!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
                 json.put("response", "UNPROCESSABLE_ENTITY: User data is invalid");
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(json.toString());
             }
@@ -72,13 +74,13 @@ public class ConnectionService {
     public ResponseEntity<Object> authenticateUser(User user) {
         try {
             JSONObject json = new JSONObject();
-            if(!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
+            if (!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
                 json.put("response", "UNPROCESSABLE_ENTITY: User data is invalid");
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(json.toString());
             }
             User usr = userRepository.authenticate(user.getEmail(), encodePwd(user.getPassword()));
             if (usr == null) {
-                json.put("response", "UNAUTHORIZED: Credentials incorrect");
+                json.put("response", "UNAUTHORIZED: Email or password incorrect");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(json.toString());
 
             } else {
@@ -112,7 +114,7 @@ public class ConnectionService {
             md.update(message.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < bytes.length; i++) {
+            for (int i = 0; i < bytes.length; i++) {
                 sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
@@ -124,7 +126,7 @@ public class ConnectionService {
 
     public boolean validateUser(String email, String sessionId) {
         try {
-            return (sessionsTokens.get(email).equals(sessionId)? true : false);
+            return (sessionsTokens.get(email).equals(sessionId) ? true : false);
         } catch (NullPointerException ex) {
             return false;
         }
@@ -136,4 +138,39 @@ public class ConnectionService {
         return token;
     }
 
+
+    // Check if sessionId is valid
+    public boolean checkToken(String sessionId) {
+        try {
+            return sessionsTokens.containsValue(sessionId);
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
+    // Check if sessionId is valid AND if email correspond to this sessionId
+    public boolean checkToken(String sessionId, String email) {
+        try {
+            return (sessionsTokens.get(email).equals(sessionId));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public ResponseEntity<Object> unauthenticatedJson() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: Unauthenticated session-id\"}");
+    }
+
+    public String getSessionUser(String sessionId) {
+        return getKeyFromValue(sessionsTokens, sessionId).toString();
+    }
+
+    public Object getKeyFromValue(Map hm, Object value) {
+        for (Object o : hm.keySet()) {
+            if (hm.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
+    }
 }
