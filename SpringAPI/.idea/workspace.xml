@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3934e195-e72c-4eb3-b187-0a89abb0c096" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/etna/Controller/ConnectionController.java" afterPath="$PROJECT_DIR$/src/main/java/com/etna/Controller/ConnectionController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/etna/Controller/OfferController.java" afterPath="$PROJECT_DIR$/src/main/java/com/etna/Controller/OfferController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/etna/Entity/User.java" afterPath="$PROJECT_DIR$/src/main/java/com/etna/Entity/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/etna/Service/ConnectionService.java" afterPath="$PROJECT_DIR$/src/main/java/com/etna/Service/ConnectionService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/etna/Service/OfferService.java" afterPath="$PROJECT_DIR$/src/main/java/com/etna/Service/OfferService.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -825,7 +820,14 @@
       <option name="project" value="LOCAL" />
       <updated>1498819851422</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Bunch of changes  and fixes on Connection and Offer modules">
+      <created>1499090199492</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1499090199492</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -925,7 +927,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Working copy of the api, build for intelij" />
     <MESSAGE value="token implementation + login/register" />
-    <option name="LAST_COMMIT_MESSAGE" value="token implementation + login/register" />
+    <MESSAGE value="Bunch of changes  and fixes on Connection and Offer modules" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bunch of changes  and fixes on Connection and Offer modules" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
