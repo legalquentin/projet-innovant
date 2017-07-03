@@ -46,8 +46,8 @@ public class ConnectionService {
 //            Though i have a hunch on why it's a really bad idea to do that
 //            we'll keep it just for the sake of avoiding errors on startup
 
-            userRepository.save(user);
-            userRepository.delete(user);
+           // userRepository.save(user);
+           // userRepository.delete(user);
 
             if(!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
                 json.put("response", "UNPROCESSABLE_ENTITY: User data is invalid");

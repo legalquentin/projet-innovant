@@ -26,7 +26,7 @@ public class ConnectionController {
     private ConnectionService connectionService ;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<Object> registerUser(@RequestBody User user) {
+    public s<Object> registerUser(@RequestBody User user) {
         return connectionService.registerUser(user);
     }
 
