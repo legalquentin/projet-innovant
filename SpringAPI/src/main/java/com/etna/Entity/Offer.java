@@ -30,6 +30,14 @@ public class Offer {
 
     public Offer() {}
 
+    public Offer(Offer offer) {
+        this.id = offer.getId();
+        this.uuid = offer.getUuid();
+        this.title = offer.getTitle();
+        this.content = offer.getContent();
+        this.author = offer.getAuthor();
+    }
+
     public Integer getId() {
         return id;
     }

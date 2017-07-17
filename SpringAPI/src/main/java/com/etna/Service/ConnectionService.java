@@ -32,7 +32,6 @@ public class ConnectionService {
     private final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private final String PWD_PATTERN = "^([a-zA-Z0-9@*#]{6,15})$";
 
-    // tadaaa
     private static final Map<String, String> sessionsTokens = new HashMap<String, String>();
 
     public Map<String, String> getSessionsTokens() {
@@ -44,9 +43,9 @@ public class ConnectionService {
         try {
             JSONObject json = new JSONObject();
 
-//            Bellow is used to create the table if it does not exist
-//            Though i have a hunch on why it's a really bad idea to do that
-//            we'll keep it just for the sake of avoiding errors on startup
+            // Bellow is used to create the table if it does not exist
+            // Though i have a hunch on why it's a really bad idea to do that
+            // we'll keep it just for the sake of avoiding errors on startup
 
             // userRepository.save(user);
             // userRepository.delete(user);
@@ -76,7 +75,7 @@ public class ConnectionService {
             JSONObject json = new JSONObject();
             if (!validator(EMAIL_PATTERN, user.getEmail()) || !validator(PWD_PATTERN, user.getPassword())) {
                 json.put("response", "UNPROCESSABLE_ENTITY: User data is invalid");
-                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(json.toString());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(json.toString());
             }
             User usr = userRepository.authenticate(user.getEmail(), encodePwd(user.getPassword()));
             if (usr == null) {
@@ -84,7 +83,7 @@ public class ConnectionService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(json.toString());
 
             } else {
-                json.put("User", usr.getJsonData());
+                json.put("User", usr.recoverJsonData());
                 json.put("session-id", createUserToken(usr.getEmail()));
                 return ResponseEntity.status(HttpStatus.OK).body(json.toString());
             }
@@ -94,7 +93,7 @@ public class ConnectionService {
         }
     }
 
-    public Boolean validator(String expr, String message) {
+    private Boolean validator(String expr, String message) {
         try {
             Pattern pattern;
             Matcher matcher;
@@ -107,15 +106,15 @@ public class ConnectionService {
         }
     }
 
-    public String encodePwd(String message) {
+    private String encodePwd(String message) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(message.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
         } catch (Exception e) {
@@ -126,13 +125,13 @@ public class ConnectionService {
 
     public boolean validateUser(String email, String sessionId) {
         try {
-            return (sessionsTokens.get(email).equals(sessionId) ? true : false);
+            return (sessionsTokens.get(email).equals(sessionId));
         } catch (NullPointerException ex) {
             return false;
         }
     }
 
-    public String createUserToken(String email) {
+    private String createUserToken(String email) {
         String token = new BigInteger(130, new SecureRandom()).toString(32);
         sessionsTokens.put(email, token);
         return token;
@@ -157,20 +156,20 @@ public class ConnectionService {
         }
     }
 
-    public ResponseEntity<Object> unauthenticatedJson() {
+    public static ResponseEntity<Object> unauthenticatedJson() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: Unauthenticated session-id\"}");
     }
 
-    public String getSessionUser(String sessionId) {
+    public static String getSessionUser(String sessionId) {
         return getKeyFromValue(sessionsTokens, sessionId).toString();
     }
 
-    public Object getKeyFromValue(Map hm, Object value) {
+    private static Object getKeyFromValue(Map hm, String value) {
         for (Object o : hm.keySet()) {
             if (hm.get(o).equals(value)) {
                 return o;
             }
         }
-        return null;
+        return "";
     }
 }

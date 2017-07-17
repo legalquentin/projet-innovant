@@ -4,6 +4,8 @@ package com.etna.Service;
 import com.etna.Entity.User;
 import com.etna.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,12 +18,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Iterable<User> getAllUsers() {
-        return this.userRepository.findAll();
+    public ResponseEntity<Object> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.userRepository.findAll());
     }
 
-    public User getUserById(Integer id) {
-        return this.userRepository.findOne(id);
+    public User getUserById(String email) {
+        return this.userRepository.findByEmail(email);
     }
 
     public void removeUserById(int id) {

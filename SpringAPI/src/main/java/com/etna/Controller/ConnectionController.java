@@ -20,18 +20,19 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/connect")
 public class ConnectionController {
 
     @Autowired
     private ConnectionService connectionService ;
 
+    // REGISTER
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
         return connectionService.registerUser(user);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    // CONNECT
+    @RequestMapping(value = "/connect", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> loginUser(@RequestBody User user) {
         return connectionService.authenticateUser(user);
     }

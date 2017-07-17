@@ -119,7 +119,7 @@ public class User {
         this.picture = picture;
     }
 
-    public JSONObject getJsonData() {
+    public JSONObject recoverJsonData() {
         try {
             JSONObject json = new JSONObject();
             json.put("xp", this.xp);
@@ -134,9 +134,7 @@ public class User {
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
-            return new JSONObject();
+            return null;
         }
     }
-
-
 }
