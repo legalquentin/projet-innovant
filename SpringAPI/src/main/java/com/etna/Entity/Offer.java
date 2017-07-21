@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Vector;
 
 /**
  * Created by quentin on 29/06/2017.
@@ -15,18 +16,33 @@ public class Offer {
     @GeneratedValue(strategy=GenerationType.AUTO)
 
     private Integer id;
+    private String state;
     private String uuid;
     private String title;
     private String content;
     private String author;
 
-    public Offer(int id, String uuid, String title, String content, String author) {
-         this.id = id;
-         this.uuid = uuid;
-         this.title = title;
-         this.content = content;
-         this.author = author;
+    public String getState() {
+        return state;
     }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Vector<String> getApplicants() {
+        return applicants;
+    }
+
+    public void setApplicants(Vector<String> applicants) {
+        this.applicants = applicants;
+    }
+
+    public void addApplicants(String uuid) {
+        this.applicants.add(uuid);
+    }
+
+    private Vector<String> applicants;
 
     public Offer() {}
 
@@ -36,6 +52,8 @@ public class Offer {
         this.title = offer.getTitle();
         this.content = offer.getContent();
         this.author = offer.getAuthor();
+        this.applicants = offer.getApplicants();
+        this.state = offer.getState();
     }
 
     public Integer getId() {

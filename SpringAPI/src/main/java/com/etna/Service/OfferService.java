@@ -1,8 +1,11 @@
 package com.etna.Service;
 
 //import com.etna.Dao.OfferDao;
+import com.etna.Entity.Notification;
 import com.etna.Entity.Offer;
+import com.etna.Entity.User;
 import com.etna.Repository.OfferRepository;
+import com.etna.Repository.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +26,12 @@ public class OfferService {
 
     @Autowired
     private OfferRepository offerRepository;
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private UserService userService;
+
     private static final Logger logger = Logger.getLogger(OfferService.class.getName());
-    private static final String standardError = "{\"response\": \"INTERNAL_SERVER_ERROR: something went wrong, Oups\"}";
 
     public ResponseEntity<Object> getAllOffers() {
         return ResponseEntity.status(HttpStatus.OK).body(this.offerRepository.findAll());
@@ -67,7 +74,7 @@ public class OfferService {
             JSONObject obj = new JSONObject();
             Offer ofr = this.offerRepository.findByUuid(offer.getUuid());
             if (offer.getAuthor() != user) {
-                return ConnectionService.unauthenticatedJson();
+                return ErrorService.unauthenticatedJson();
             }
             ofr.setTitle(offer.getTitle());
             ofr.setContent(offer.getContent());
@@ -75,7 +82,7 @@ public class OfferService {
             obj.put("response", "OK : Offer "+offer.getTitle()+" of "+offer.getAuthor()+" modifications has been saved");
             return ResponseEntity.status(HttpStatus.OK).body(obj.toString());
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
+            return ErrorService.standardError(ex.getMessage());
         }
     }
 
@@ -89,15 +96,40 @@ public class OfferService {
                 obj.put("response", "FORBIDDEN : Fail to insert offer, Content and title cannot be null");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(obj.toString());
             } else {
+                offer.setState("open");
                 offerRepository.save(offer);
                 logger.info("Inserted offer : " + offer.getUuid());
-                obj.put("response", "Inserted offer : " + offer.getUuid());
+                obj.put("response", offer.getUuid());
                 return ResponseEntity.status(HttpStatus.OK).body(obj.toString());
             }
         } catch (Exception ex) {
-            logger.warning("Error while inserting Offer : "+offer.getUuid()+" Cause : "+ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
+            return ErrorService.standardError(ex.getMessage());
         }
     }
 
+    public ResponseEntity<Object> applyOffer(JSONObject application) {
+        try {
+            String user = application.getString("applicant");
+            String offerUuid = application.getString("uuid");
+
+            User applicant = userService.getUserByEmail(user);
+            Offer offer = offerRepository.findByUuid(offerUuid);
+            // offerUuid is invalid
+            if (offer == null)
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: uuid is invalid\"}");
+            if (offer.getApplicants().contains(applicant.getUuid()))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: already registered\"}");
+
+            offer.addApplicants(applicant.getUuid());
+            offerRepository.save(offer);
+            Notification notification = new Notification(0,null,"Réponse à l'offre","Bonjour je veut postuler","",user,"Unread",offer.getAuthor());
+            if (notificationService.addNotification(notification))
+                return ResponseEntity.status(HttpStatus.OK).body("{\"response\": \"OK: application submited\"}");
+        } catch (JSONException e) {
+            return ErrorService.invalidJsonRequest(e.getMessage());
+        } catch (Exception e) {
+            return ErrorService.standardError(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("mdr");
+    }
 }

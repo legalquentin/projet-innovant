@@ -37,9 +37,9 @@ public class ConnectionController {
         return connectionService.authenticateUser(user);
     }
 
-    // Absolutely have to remove that b4 prod
-    @RequestMapping("/listTokens")
-    public Map<String,String> ListTokens() {
-        return connectionService.getSessionsTokens();
-    }
+    // ABSOLUTELY HAVE TO REMOVE THAT BEFORE PROD !!!
+    // @RequestMapping("/listTokens")
+    // public Map<String,String> ListTokens() {
+    //     return connectionService.getSessionsTokens();
+    // }
 }

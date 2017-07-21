@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +62,7 @@ public class ConnectionService {
             }
             String pwd = user.getPassword();
             user.setPassword(encodePwd(pwd));
+            user.setUuid(UUID.randomUUID().toString());
             userRepository.save(user);
             user.setPassword(pwd);
             return authenticateUser(user);
@@ -137,9 +139,10 @@ public class ConnectionService {
         return token;
     }
 
+    /* STATICS METHODS */
 
     // Check if sessionId is valid
-    public boolean checkToken(String sessionId) {
+    public static boolean checkToken(String sessionId) {
         try {
             return sessionsTokens.containsValue(sessionId);
         } catch (NullPointerException e) {
@@ -148,16 +151,12 @@ public class ConnectionService {
     }
 
     // Check if sessionId is valid AND if email correspond to this sessionId
-    public boolean checkToken(String sessionId, String email) {
+    public static boolean checkToken(String sessionId, String email) {
         try {
             return (sessionsTokens.get(email).equals(sessionId));
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public static ResponseEntity<Object> unauthenticatedJson() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: Unauthenticated session-id\"}");
     }
 
     public static String getSessionUser(String sessionId) {

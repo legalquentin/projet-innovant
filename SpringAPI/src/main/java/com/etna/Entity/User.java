@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Vector;
 
 /*
  * Created by quentin on 29/06/2017.
@@ -28,6 +29,8 @@ public class User {
     private String country;
     private String password;
     private String picture;
+    private String uuid;
+    private Vector<String> contacts;
 
     public User() {}
 
@@ -37,6 +40,18 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Vector<String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Vector<String> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void addContact(String uuid) {
+        this.contacts.add(uuid);
     }
 
     public Integer getXp() {
@@ -122,6 +137,7 @@ public class User {
     public JSONObject recoverJsonData() {
         try {
             JSONObject json = new JSONObject();
+            json.put("uuid", this.uuid);
             json.put("xp", this.xp);
             json.put("newsletter", this.newsletter);
             json.put("dateBirth", this.dateBirth);
@@ -131,10 +147,19 @@ public class User {
             json.put("email", this.email);
             json.put("country", this.country);
             json.put("picture", this.picture);
+            json.put("contacts", this.contacts);
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 }
