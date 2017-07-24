@@ -1,6 +1,7 @@
 package com.etna.Service;
 
 //import com.etna.Dao.OfferDao;
+import com.etna.Entity.Application;
 import com.etna.Entity.Notification;
 import com.etna.Entity.Offer;
 import com.etna.Entity.User;
@@ -30,6 +31,8 @@ public class OfferService {
     private NotificationService notificationService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ApplicationService applicationService;
 
     private static final Logger logger = Logger.getLogger(OfferService.class.getName());
 
@@ -52,14 +55,14 @@ public class OfferService {
             Offer offer = this.offerRepository.findByUuid(uuid);
             if (offer == null) {
                 obj.put("response", "NOT_FOUND : the offer does not exist");
-                logger.warning("OFFER = NULL");
+                logger.warning("/DeleteOffer failed, reason : not_found");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(obj.toString());
             }
             else if (offer.getAuthor().equals(email)) {
                 this.offerRepository.delete(offer);
                 logger.info("Deleted offer : " + offer.getTitle() + " by : " + offer.getAuthor() + " at : " + Instant.now());
                 obj.put("response", "Deleted offer : " + offer.getTitle() + " by : " + offer.getAuthor());
-                return ResponseEntity.status(HttpStatus.OK).body(obj);
+                return ResponseEntity.status(HttpStatus.OK).body(obj.toString());
             } else {
                 obj.put("response", "FORBIDDEN : Not the offer Author");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(obj.toString());
@@ -69,19 +72,24 @@ public class OfferService {
         }
     }
 
-    public ResponseEntity<Object> updateOffer(Offer offer, String user) {
+    public ResponseEntity<Object> updateOffer(Offer offer, String session_id) {
         try {
-            JSONObject obj = new JSONObject();
-            Offer ofr = this.offerRepository.findByUuid(offer.getUuid());
-            if (offer.getAuthor() != user) {
-                return ErrorService.unauthenticatedJson();
-            }
+            if (offer.getUuid() == null || offer.getTitle() == null || offer.getContent() == null || offer.getState() == null)
+                return ErrorService.invalidJsonRequest("Invalid Offer Format");
+            Offer ofr = offerRepository.findByUuid(offer.getUuid());
+            if (ofr == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"response\":\"No offer found\"}");
+            logger.info("ofr.getAuthor() = '"+ofr.getAuthor()+"' and connection user = '"+ConnectionService.getSessionUser(session_id)+"'");
+            if (!ConnectionService.checkToken(session_id, ofr.getAuthor()))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\":\"Not the offer owner\"}");
             ofr.setTitle(offer.getTitle());
             ofr.setContent(offer.getContent());
-            this.offerRepository.save(ofr);
-            obj.put("response", "OK : Offer "+offer.getTitle()+" of "+offer.getAuthor()+" modifications has been saved");
-            return ResponseEntity.status(HttpStatus.OK).body(obj.toString());
+            ofr.setState(offer.getState());
+            offerRepository.save(ofr);
+            notificationService.addNotification("Modification", "Vous avez modifié une annonce", "Information", "Admin@mail.com", "New", offer.getAuthor());
+            return ResponseEntity.status(HttpStatus.OK).body("{\"response\":\"Modifications saved\"}");
         } catch (Exception ex) {
+            ex.printStackTrace();
             return ErrorService.standardError(ex.getMessage());
         }
     }
@@ -98,6 +106,7 @@ public class OfferService {
             } else {
                 offer.setState("open");
                 offerRepository.save(offer);
+                notificationService.addNotification("Annonce", "Vous avez posté une annonce", "Annonce", "Admin@mail.com", "New", offer.getAuthor());
                 logger.info("Inserted offer : " + offer.getUuid());
                 obj.put("response", offer.getUuid());
                 return ResponseEntity.status(HttpStatus.OK).body(obj.toString());
@@ -107,26 +116,29 @@ public class OfferService {
         }
     }
 
-    public ResponseEntity<Object> applyOffer(JSONObject application) {
+    public ResponseEntity<Object> applyOffer(Application application) {
         try {
-            String user = application.getString("applicant");
-            String offerUuid = application.getString("uuid");
 
-            User applicant = userService.getUserByEmail(user);
-            Offer offer = offerRepository.findByUuid(offerUuid);
+            String user_uuid = application.getUser_uuid();
+            String offer_uuid = application.getOffer_uuid();
+
+            User applicant = userService.getUserByEmail(user_uuid);
+            Offer offer = offerRepository.findByUuid(offer_uuid);
             // offerUuid is invalid
-            if (offer == null)
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: uuid is invalid\"}");
-            if (offer.getApplicants().contains(applicant.getUuid()))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: already registered\"}");
 
-            offer.addApplicants(applicant.getUuid());
-            offerRepository.save(offer);
-            Notification notification = new Notification(0,null,"Réponse à l'offre","Bonjour je veut postuler","",user,"Unread",offer.getAuthor());
-            if (notificationService.addNotification(notification))
+            if (offer == null)
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: no offer found\"}");
+            if (applicationService.findUserInOfferApplication(offer_uuid, user_uuid) != null)
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: already applied\"}");
+
+            /* OK then proceed to send a notification and save the application */
+
+            String uuid = notificationService.addNotification("Demande", "lalala c'est un test", "Demande", applicant.getEmail(), "New", offer.getAuthor());
+            applicationService.addApplicant(offer_uuid, user_uuid, "New",uuid);
+
+            Notification notification = new Notification(null,"Réponse à l'offre","Bonjour je veut postuler","",applicant.getEmail(),"Unread",offer.getAuthor());
+            if (notificationService.addNotification(notification) != null)
                 return ResponseEntity.status(HttpStatus.OK).body("{\"response\": \"OK: application submited\"}");
-        } catch (JSONException e) {
-            return ErrorService.invalidJsonRequest(e.getMessage());
         } catch (Exception e) {
             return ErrorService.standardError(e.getMessage());
         }

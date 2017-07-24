@@ -24,8 +24,8 @@ public class Notification {
     private String state;
     private String recipient;
 
-    public Notification(Integer id, String uuid, String title, String content, String type, String sender, String state, String recipient) {
-        this.id = id;
+    public Notification(String uuid, String title, String content, String type, String sender, String state, String recipient) {
+        this.id = 0;
         this.uuid = uuid;
         this.title = title;
         this.content = content;

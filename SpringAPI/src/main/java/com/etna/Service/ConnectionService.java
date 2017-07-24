@@ -35,6 +35,10 @@ public class ConnectionService {
 
     private static final Map<String, String> sessionsTokens = new HashMap<String, String>();
 
+    public ConnectionService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public Map<String, String> getSessionsTokens() {
         return sessionsTokens;
     }

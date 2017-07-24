@@ -38,8 +38,8 @@ public class ConnectionController {
     }
 
     // ABSOLUTELY HAVE TO REMOVE THAT BEFORE PROD !!!
-    // @RequestMapping("/listTokens")
-    // public Map<String,String> ListTokens() {
-    //     return connectionService.getSessionsTokens();
-    // }
+    @RequestMapping("/listTokens")
+    public Map<String,String> ListTokens() {
+        return connectionService.getSessionsTokens();
+    }
 }

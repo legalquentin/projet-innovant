@@ -30,20 +30,6 @@ public class Offer {
         this.state = state;
     }
 
-    public Vector<String> getApplicants() {
-        return applicants;
-    }
-
-    public void setApplicants(Vector<String> applicants) {
-        this.applicants = applicants;
-    }
-
-    public void addApplicants(String uuid) {
-        this.applicants.add(uuid);
-    }
-
-    private Vector<String> applicants;
-
     public Offer() {}
 
     public Offer(Offer offer) {
@@ -52,7 +38,6 @@ public class Offer {
         this.title = offer.getTitle();
         this.content = offer.getContent();
         this.author = offer.getAuthor();
-        this.applicants = offer.getApplicants();
         this.state = offer.getState();
     }
 

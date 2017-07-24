@@ -55,10 +55,9 @@ public class NotificationService {
                 return ErrorService.invalidJsonRequest("InsertNotification : recipient does not exist");
             if (!Arrays.asList(notificationsTypes).contains(notification.getType()))
                 return ErrorService.invalidJsonRequest("InsertNotification :type is invalid");
-            notification.setId(0);
             notification.setSender(user);
-            notification.setState("Unread");
-            if (this.addNotification(notification))
+            notification.setState("New");
+            if (this.addNotification(notification) != null)
                 return ResponseEntity.status(HttpStatus.OK).body("{\"response\":\"notification sent\"}");
             return ErrorService.invalidJsonRequest("null in notification");
         } catch (Exception e) {
@@ -79,12 +78,23 @@ public class NotificationService {
         return this.notificationRepository.findByUuid(uuid);
     }
 
-    public Boolean addNotification(Notification notification) {
+    public String addNotification(String title, String content, String type, String sender, String state, String recipient) {
+        Notification notification = new Notification(UUID.randomUUID().toString(),title,content,type,sender,state,recipient);
+        if (notification.isValid()) {
+            notification.setId(null);
+            notificationRepository.save(notification);
+            return notification.getUuid();
+        }
+        return null;
+    }
+
+    public String addNotification(Notification notification) {
         notification.setUuid(UUID.randomUUID().toString());
         if (notification.isValid()) {
+            notification.setId(null);
             notificationRepository.save(notification);
-            return true;
+            return notification.getUuid();
         }
-        return false;
+        return null;
     }
 }
