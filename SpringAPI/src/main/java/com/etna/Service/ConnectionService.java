@@ -112,7 +112,7 @@ public class ConnectionService {
         }
     }
 
-    private String encodePwd(String message) {
+    public String encodePwd(String message) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

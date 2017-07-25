@@ -22,7 +22,7 @@ public class NotificationController {
 
     private static final Logger LOGGER = Logger.getLogger(com.etna.Controller.OfferController.class.getName());
 
-    // GET ALL NOTIFICATIONS
+    // GET ALL NOTIFICATIONS (for the logged user)
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Object> getAllNotifications(@RequestHeader(value="session-id") String sessionId) {
         LOGGER.info("/Notifications : getAllNotifications requested");

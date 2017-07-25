@@ -1,10 +1,15 @@
 package com.etna.Entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * Created by quentin on 21/07/2017.
@@ -23,6 +28,9 @@ public class Notification {
     private String sender;
     private String state;
     private String recipient;
+    private String date;
+
+
 
     public Notification(String uuid, String title, String content, String type, String sender, String state, String recipient) {
         this.id = 0;
@@ -33,10 +41,12 @@ public class Notification {
         this.sender = sender;
         this.state = state;
         this.recipient = recipient;
+        this.date = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
     }
 
     public Notification() {
         this.id = 0;
+        this.date = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
     }
 
     public Integer getId() {
@@ -103,6 +113,14 @@ public class Notification {
         this.state = state;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public boolean isValid() {
         try {
             for (Field f : getClass().getDeclaredFields())
@@ -112,5 +130,23 @@ public class Notification {
             return false;
         }
         return true;
+    }
+
+    public JSONObject recoverJsonData() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("uuid", this.uuid);
+            json.put("title", this.title);
+            json.put("content", this.content);
+            json.put("type", this.type);
+            json.put("sender", this.sender);
+            json.put("state", this.state);
+            json.put("recipient", this.recipient);
+            json.put("date", this.date);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

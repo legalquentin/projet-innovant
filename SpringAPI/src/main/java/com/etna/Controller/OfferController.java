@@ -2,6 +2,7 @@ package com.etna.Controller;
 
 import com.etna.Entity.Application;
 import com.etna.Entity.Offer;
+import com.etna.Entity.User;
 import com.etna.Service.ConnectionService;
 import com.etna.Service.ErrorService;
 import com.etna.Service.OfferService;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -82,16 +85,14 @@ public class OfferController {
     public ResponseEntity<Object> applyOffer(@RequestBody Application application, @RequestHeader("session-id") String sessionId) {
         LOGGER.info("/Offers : applyOffer requested");
         try {
-            String user_email = userService.getUserByUuid(application.getUser_uuid()).getEmail();
-            if (!ConnectionService.checkToken(sessionId, user_email)) {
-                if (!ConnectionService.checkToken(sessionId)) {
-                    return ErrorService.unauthenticatedJson();
-                }
-                LOGGER.warning("/Offers : " + ConnectionService.getSessionUser(sessionId) + " tried to usurp : " + user_email);
-                application.setUser_uuid(userService.getUserByEmail(user_email).getUuid());
-            }
-            return offerService.applyOffer(application);
+            LOGGER.info("date : "+new Date());
+            if (!ConnectionService.checkToken(sessionId))
+                return ErrorService.unauthenticatedJson();
+            User user = userService.getUserByEmail(ConnectionService.getSessionUser(sessionId));
+            application.setUser_uuid(user.getUuid());
+            return offerService.applyOffer(application, user);
         } catch (Exception e) {
+            e.printStackTrace();
             return ErrorService.standardError(e.getMessage());
         }
     }

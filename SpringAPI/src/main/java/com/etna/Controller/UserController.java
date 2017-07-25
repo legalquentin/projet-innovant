@@ -5,6 +5,7 @@ import com.etna.Service.ConnectionService;
 import com.etna.Service.ErrorService;
 import com.etna.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.logging.Logger;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  */
 
 @RestController
-@RequestMapping("/Users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -39,16 +40,25 @@ public class UserController {
     }
 
     // GET ONE
-    @RequestMapping(value = "/{email}", method = RequestMethod.GET)
-    public User getUserById(@PathVariable("email") String email) {
-        return userService.getUserByEmail(email);
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET)
+    public User getUserById(@PathVariable("uuid") String uuid) {
+        return userService.getUserByUuid(uuid);
     }
 
     // DELETE ONE
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteUserById(@PathVariable("id") int id) {
-        userService.removeUserById(id);
+/*
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteUserById(@PathVariable("uuid") String uuid, @RequestHeader("session-id") String sessionId) {
+        if (!connectionService.checkToken(sessionId)) {
+            return ErrorService.unauthenticatedJson();
+        }
+        User user = userService.getUserByEmail(ConnectionService.getSessionUser(sessionId));
+        if (user.getUuid() != uuid)
+            return ErrorService.unauthenticatedJson();
+        userService.removeUserByuuid(uuid);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: Unauthenticated session-id\"}");
     }
+*/
 
     // UPDATE ONE
     @RequestMapping(method = RequestMethod.PUT)

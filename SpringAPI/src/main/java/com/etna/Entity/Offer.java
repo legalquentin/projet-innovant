@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -21,6 +23,7 @@ public class Offer {
     private String title;
     private String content;
     private String author;
+    private String publication_date;
 
     public String getState() {
         return state;
@@ -30,7 +33,9 @@ public class Offer {
         this.state = state;
     }
 
-    public Offer() {}
+    public Offer() {
+        this.publication_date = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
+    }
 
     public Offer(Offer offer) {
         this.id = offer.getId();
@@ -39,6 +44,7 @@ public class Offer {
         this.content = offer.getContent();
         this.author = offer.getAuthor();
         this.state = offer.getState();
+        this.publication_date = offer.getPublication_date();
     }
 
     public Integer getId() {
@@ -80,4 +86,13 @@ public class Offer {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    public String getPublication_date() {
+        return publication_date;
+    }
+
+    public void setPublication_date(String publication_date) {
+        this.publication_date = publication_date;
+    }
+
 }

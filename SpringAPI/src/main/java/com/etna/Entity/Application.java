@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DateFormat;
+import java.util.Date;
 
 /* This entity represent an Application to an offer */
 /* It contain the user_uuid (who have applied), the offer_uuid, the state and the notification_uuid*/
@@ -19,8 +21,10 @@ public class Application {
     private String offer_uuid;
     private String state;
     private String notification_uuid;
+    private String application_date;
 
     public Application() {
+        this.application_date = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
     }
 
     public Application(String user_uuid, String offer_uuid, String state, String notification_uuid) {
@@ -28,6 +32,7 @@ public class Application {
         this.offer_uuid = offer_uuid;
         this.state = state;
         this.notification_uuid = notification_uuid;
+        this.application_date = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
     }
 
     public Integer getId() {
@@ -68,5 +73,13 @@ public class Application {
 
     public void setNotification_uuid(String notification_uuid) {
         this.notification_uuid = notification_uuid;
+    }
+
+    public String getApplication_date() {
+        return application_date;
+    }
+
+    public void setApplication_date(String application_date) {
+        this.application_date = application_date;
     }
 }

@@ -2,6 +2,7 @@ package com.etna.Service;
 
 import com.etna.Entity.Notification;
 import com.etna.Repository.NotificationRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,24 @@ public class NotificationService {
         try {
             // NO ! Don't return that unless admin or super-user
             // return ResponseEntity.status(HttpStatus.OK).body(this.notificationRepository.findAll());
-
             JSONObject response = new JSONObject();
+            JSONArray array_sent = new JSONArray();
+            JSONArray array_received = new JSONArray();
 
-            response.put("sent", getNotificationsByOwner(user));
-            response.put("received", getNotificationsByOwner(user));
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            Iterable<Notification> s_notifications = getNotificationsBySender(user);
+            for(Notification notification : s_notifications) {
+                array_sent.put(notification.recoverJsonData());
+            }
+
+            Iterable<Notification> r_notifications = getNotificationsByOwner(user);
+            for(Notification notification : r_notifications) {
+                array_received.put(notification.recoverJsonData());
+            }
+            response.put("sent", array_sent);
+            response.put("received", array_received);
+            return ResponseEntity.status(HttpStatus.OK).body(response.toString());
         } catch (JSONException e) {
+            e.printStackTrace();
             return ErrorService.standardError(e.getMessage());
         }
     }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 /*
@@ -32,7 +34,9 @@ public class User {
     private String uuid;
     private Vector<String> contacts;
 
-    public User() {}
+    public User() {
+        dateJoin = DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format(new Date());
+    }
 
     public Integer getId() {
         return id;
@@ -148,6 +152,7 @@ public class User {
             json.put("country", this.country);
             json.put("picture", this.picture);
             json.put("contacts", this.contacts);
+            json.put("dateJoin", this.dateJoin);
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -162,4 +167,6 @@ public class User {
     public String getUuid() {
         return uuid;
     }
+
+
 }

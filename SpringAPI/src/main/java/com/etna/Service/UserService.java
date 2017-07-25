@@ -26,8 +26,6 @@ public class UserService {
         Iterable<User> users = this.userRepository.findAll();
         JSONArray jsonUsers =  new JSONArray();
         for(User user : users) {
-
-            user.setFirstName("testName");
             jsonUsers.put(user.recoverJsonData());
         }
         return ResponseEntity.status(HttpStatus.OK).body("{\"reponse\"" + jsonUsers+"}");
@@ -41,9 +39,9 @@ public class UserService {
         return this.userRepository.findByuuid(uuid);
     }
 
-    public void removeUserById(int id) {
-        this.userRepository.delete(id);
-    }
+/*    public void removeUserByuuid(String uuid) {
+        this.userRepository.deleteByUuid(uuid);
+    }*/
 
     public void updateUser(User user) {
         User usr = this.userRepository.findOne(user.getId());

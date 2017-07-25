@@ -116,13 +116,11 @@ public class OfferService {
         }
     }
 
-    public ResponseEntity<Object> applyOffer(Application application) {
+    public ResponseEntity<Object> applyOffer(Application application, User applicant) {
         try {
-
-            String user_uuid = application.getUser_uuid();
+            String user_uuid = applicant.getUuid();
             String offer_uuid = application.getOffer_uuid();
 
-            User applicant = userService.getUserByEmail(user_uuid);
             Offer offer = offerRepository.findByUuid(offer_uuid);
             // offerUuid is invalid
 
@@ -134,13 +132,15 @@ public class OfferService {
             /* OK then proceed to send a notification and save the application */
 
             String uuid = notificationService.addNotification("Demande", "lalala c'est un test", "Demande", applicant.getEmail(), "New", offer.getAuthor());
-            applicationService.addApplicant(offer_uuid, user_uuid, "New",uuid);
 
-            Notification notification = new Notification(null,"Réponse à l'offre","Bonjour je veut postuler","",applicant.getEmail(),"Unread",offer.getAuthor());
-            if (notificationService.addNotification(notification) != null)
+//            Notification notification = new Notification(null,"Réponse à l'offre","Bonjour je veut postuler","",applicant.getEmail(),"Unread",offer.getAuthor());
+            if (uuid != null) {
+                applicationService.addApplicant(offer_uuid, user_uuid, "New",uuid);
                 return ResponseEntity.status(HttpStatus.OK).body("{\"response\": \"OK: application submited\"}");
+            }
         } catch (Exception e) {
-            return ErrorService.standardError(e.getMessage());
+            e.printStackTrace();
+            return ErrorService.invalidJsonRequest(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body("mdr");
     }
