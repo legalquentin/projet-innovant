@@ -14,7 +14,7 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     Iterable<Application> findByOfferUuid(@Param("offer_uuid") String offer_uuid);
 
     @Query(value = "SELECT * FROM application WHERE notification_uuid = :notification_uuid", nativeQuery = true)
-    Iterable<Application> findByNotificationUuid(@Param("notification_uuid") String notification_uuid);
+    Application findByNotificationUuid(@Param("notification_uuid") String notification_uuid);
 
     @Query(value = "SELECT * FROM application WHERE state = :state", nativeQuery = true)
     Iterable<Application> findByState(@Param("state") String state);

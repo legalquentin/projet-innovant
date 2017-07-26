@@ -124,14 +124,18 @@ public class OfferService {
             Offer offer = offerRepository.findByUuid(offer_uuid);
             // offerUuid is invalid
 
-            if (offer == null)
+            if (offer == null) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: no offer found\"}");
-            if (applicationService.findUserInOfferApplication(offer_uuid, user_uuid) != null)
+            }
+            logger.warning("user_uuid : "+user_uuid+" and offer_uuid :"+offer_uuid);
+            Application app = applicationService.findUserInOfferApplication(offer_uuid, user_uuid);
+//            logger.warning("app : "+app.getState());
+            if ( app != null) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: already applied\"}");
-
+            }
             /* OK then proceed to send a notification and save the application */
 
-            String uuid = notificationService.addNotification("Demande", "lalala c'est un test", "Demande", applicant.getEmail(), "New", offer.getAuthor());
+            String uuid = notificationService.addNotification("Demande", "Bonjour, j'aimerais répondre à votre demande", "Demande", applicant.getEmail(), "New", offer.getAuthor());
 
 //            Notification notification = new Notification(null,"Réponse à l'offre","Bonjour je veut postuler","",applicant.getEmail(),"Unread",offer.getAuthor());
             if (uuid != null) {

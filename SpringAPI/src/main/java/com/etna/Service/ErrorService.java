@@ -13,7 +13,7 @@ public class ErrorService {
     private static final Logger logger = Logger.getLogger(OfferService.class.getName());
 
     public static ResponseEntity<Object> unauthenticatedJson() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"response\": \"FORBIDDEN: Unauthenticated session-id\"}");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"response\": \"UNAUTHORIZED: Unauthenticated session-id\"}");
     }
 
     public static ResponseEntity<Object> invalidJsonRequest(String message) {
