@@ -19,7 +19,7 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
-    private static final Logger LOGGER = Logger.getLogger(com.etna.Controller.OfferController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OfferController.class.getName());
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Object> getAllContacts(@RequestHeader("session-id") String sessionId) {

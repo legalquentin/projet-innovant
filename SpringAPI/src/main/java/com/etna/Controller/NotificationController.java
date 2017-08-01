@@ -20,7 +20,7 @@ public class NotificationController {
     @Autowired
     private ConnectionService connectionService;
 
-    private static final Logger LOGGER = Logger.getLogger(com.etna.Controller.OfferController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OfferController.class.getName());
 
     // GET ALL NOTIFICATIONS (for the logged user)
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")

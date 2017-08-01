@@ -22,7 +22,7 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    private static final Logger LOGGER = Logger.getLogger(com.etna.Controller.OfferController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OfferController.class.getName());
 
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")

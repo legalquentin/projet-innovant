@@ -1,0 +1,417 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Pro-Inno",
+		"_postman_id": "db4cc02a-6e8b-f024-5a12-24bcbe473091",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"url": "http://localhost:8080/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"quentin@mail.com\",\n\t\"password\":\"test123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Connect",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"sessionId\", jsonData.session-id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/connect",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"quentin@mail.com\",\n\t\"password\":\"test123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"url": "http://localhost:8080/offers/289caa38-ab99-409e-9c2b-877af88be0f8",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One User",
+			"request": {
+				"url": "http://localhost:8080/users/ddc37536-2165-41b9-befe-bf73dbedf6a2",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Offers",
+			"request": {
+				"url": "http://localhost:8080/offers",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Offer",
+			"request": {
+				"url": "http://localhost:8080/offers/289caa38-ab99-409e-9c2b-877af88be0f8",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create One Offer",
+			"request": {
+				"url": "http://localhost:8080/offers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"author\": \"quentin\",\n\t\"title\": \"new offer\",\n\t\"content\": \"Content of the Offer\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update One Offer",
+			"request": {
+				"url": "http://localhost:8080/offers",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"uuid\":\"test\",\n\t\"author\": \"quentin@mail.com\",\n\t\"title\": \"Super new offer\",\n\t\"state\": \"Archived\",\n\t\"content\": \"New Content of the Super Offer\"\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove One Offer",
+			"request": {
+				"url": "http://localhost:8080/offers/289caa38-ab99-409e-9c2b-877af88be",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Apply To One Offer",
+			"request": {
+				"url": "http://localhost:8080/offers/apply",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"offer_uuid\": \"8caa3764-4f4b-490b-9af0-49bcb4af28d1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Notifications",
+			"request": {
+				"url": "http://localhost:8080/users/ddc37536-2165-41b9-befe-bf73dbedf6a2",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add One Contact",
+			"request": {
+				"url": "http://localhost:8080/contacts/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Contacts",
+			"request": {
+				"url": "http://localhost:8080/contacts/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create One Message",
+			"request": {
+				"url": "http://localhost:8080/messages/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"recipient\": \"seb@mail.com\",\n\t\"title\":\"hello\",\n\t\"content\":\"Bonjour,je m'apelle lucas je suis intéréssé par votre offre, et j'ai d'ailleur postulé...\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Messages",
+			"request": {
+				"url": "http://localhost:8080/contacts/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create One Trip",
+			"request": {
+				"url": "http://localhost:8080/contacts/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Trips",
+			"request": {
+				"url": "http://localhost:8080/contacts/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add One Experience",
+			"request": {
+				"url": "http://localhost:8080/experiences/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Trip Experiences",
+			"request": {
+				"url": "http://localhost:8080/trips/f8494216-9431-48e4-a694-1fc85a899e12",
+				"method": "GET",
+				"header": [
+					{
+						"key": "session-id",
+						"value": "{{sessionId}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

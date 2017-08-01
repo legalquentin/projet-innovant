@@ -28,12 +28,18 @@ public class ContactService {
 
     public ResponseEntity<Object> findAllContacts(String sessionId) {
 
-        JSONArray array = new JSONArray();
         User user = userService.getUserByEmail(ConnectionService.getSessionUser(sessionId));
+
+        return ResponseEntity.status(HttpStatus.OK).body(getUserContacts(user).toString());
+    }
+
+    public JSONArray getUserContacts(User user) {
+        JSONArray array = new JSONArray();
+
         for (String uuid : contactRepository.findUserFriends(user.getUuid())) {
             array.put(userService.getUserByUuid(uuid).recoverJsonData());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(array.toString());
+        return array;
     }
 
     public ResponseEntity<Object> AddContact(Contact new_contact, String sessionId) {
