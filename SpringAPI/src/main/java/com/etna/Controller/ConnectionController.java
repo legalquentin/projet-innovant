@@ -6,10 +6,7 @@ import com.etna.Service.ConnectionService;
 import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -26,6 +23,7 @@ public class ConnectionController {
     private ConnectionService connectionService ;
 
     // REGISTER
+    @CrossOrigin(origins = "http:/192.168.237.133:4200")
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
         return connectionService.registerUser(user);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.logging.Logger;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:80")
+@CrossOrigin(origins = "*")
 @RequestMapping("/messages")
 public class MessageController {
 
