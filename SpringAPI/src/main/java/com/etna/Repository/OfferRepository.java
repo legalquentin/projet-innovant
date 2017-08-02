@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface OfferRepository extends CrudRepository<Offer, Integer> {
 
-    @Query(value = "SELECT * FROM Offer where uuid = :uuid", nativeQuery = true)
+    @Query(value = "SELECT * FROM offer where uuid = :uuid", nativeQuery = true)
     Offer findByUuid(@Param("uuid") String uuid);
 
 }
