@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:80")
 @RequestMapping("/messages")
 public class MessageController {
 
@@ -25,6 +26,7 @@ public class MessageController {
     private static final Logger LOGGER = Logger.getLogger(OfferController.class.getName());
 
 
+    @CrossOrigin(origins = "http://localhost:80")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Object> getAllMessages(@RequestHeader(value="session-id") String sessionId) {
         LOGGER.info("/Messages : getAllMessages requested");
